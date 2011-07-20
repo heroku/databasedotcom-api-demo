@@ -1,10 +1,19 @@
 .title
-  %h2
-    = @sobject
-.description
-  Records: 
-  - session[:client].materialize(@sobject).all.each do |record|
-    .sobject_record
-      .record_name
-        %a{:href => "/sobject/#{@sobject}/#{record.Id}"}
-          = record.Name
+  %h2== #{@sobject} (#{@names_or_ids.total_size} records)
+
+.page
+  - if @has_next_page
+    %a{:href => '#'}
+      Next Page
+    %br
+    %br
+  .records
+    %ul
+      - while true
+        - @names_or_ids.each do |record|
+          %li
+            .sobject_record
+              %a{:href => "/sobject/#{@sobject}/#{record.Id}"}
+                = record.Name || record.Id
+        - break unless @names_or_ids.next_page?
+        - @names_or_ids = @names_or_ids.next_page

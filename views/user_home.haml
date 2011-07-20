@@ -1,7 +1,8 @@
-.title
-  This is user home
-
-- session[:client].list_sobjects.each do |sobject|
-  .sobject
-    %a{:href => "/sobject/#{sobject}" }
-      = sobject
+%h2 Classes in the database
+.page
+  %ul
+    - session[:client].list_sobjects.each do |sobject|
+      %li
+        .sobject
+          %a{:href => "/sobject/#{sobject}" }
+            = sobject

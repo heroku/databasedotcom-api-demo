@@ -4,6 +4,7 @@ require 'oa-oauth'
 require 'yaml'
 require 'rubygems'
 require 'forcedotcom/api'
+require 'haml'
 
 use Rack::Session::Cookie
 
@@ -26,6 +27,7 @@ end
 
 get "/sobject/:type" do
   @sobject = params[:type]
+  @names_or_ids = session[:client].query("SELECT Name,Id FROM #{@sobject}") rescue session[:client].query("SELECT Id FROM #{@sobject}")
   haml :sobject
 end
 

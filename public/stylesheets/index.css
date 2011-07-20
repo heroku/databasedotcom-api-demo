@@ -1,0 +1,35 @@
+body {
+  text-align: center;
+}
+
+#content {
+  width: 500px;
+  font-size: 16px;
+  margin: 0 auto;
+}
+
+.top_links {
+  margin-bottom: 20px;
+}
+
+.page {
+  text-align: left;
+}
+
+.page ul {
+  padding-left: 0;
+}
+
+.page li {
+  list-style: none;
+  padding: 7px 10px;
+  text-align: center;
+}
+
+.page li:nth-child(odd) {
+  background-color: #ccc;
+}
+
+.page li a {
+  text-decoration: none;
+}

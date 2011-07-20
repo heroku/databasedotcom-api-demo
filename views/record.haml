@@ -1,8 +1,8 @@
-Type:
-%a{:href => "/sobject/#{params[:type]}"}
-  = params[:type]
+.page
+  Type:
+  %a{:href => "/sobject/#{params[:type]}"}
+    = params[:type]
 
-- @record.instance_variables.each do |field|
-  .field
-    - field = field.to_s.gsub('@', '')
-    = "#{field} : #{@record.send(field)}"
+  - @record.class.attributes.each do |attr|
+    .field
+      = "#{attr} : #{@record.send(attr)}"

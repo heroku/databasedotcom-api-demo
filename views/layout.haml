@@ -2,11 +2,12 @@
   %head
     %title
       Force.com Demo App
+    %link{:rel => 'stylesheet', :href => '/stylesheets/index.css'}
   %body
 
-    .top_links
-      %a{:href => "/"}
-        Home
-        
-    .page
+    #content
+      .top_links
+        %a{:href => "/"}
+          Home
+
       = yield
