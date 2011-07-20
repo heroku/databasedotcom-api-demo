@@ -1,0 +1,3 @@
+.bundle/**
+config/salesforce.yml
+.idea/**
