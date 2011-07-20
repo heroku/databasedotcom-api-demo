@@ -1,1 +1,7 @@
-This is user home
+.title
+  This is user home
+
+- session[:client].list_sobjects.each do |sobject|
+  .sobject
+    %a{:href => "/sobject/#{sobject}" }
+      = sobject

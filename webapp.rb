@@ -1,4 +1,5 @@
 require 'sinatra'
+require "sinatra/reloader"
 require 'oa-oauth'
 require 'yaml'
 require 'rubygems'
@@ -18,7 +19,19 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  auth_hash = request.env['omniauth.auth']
-  session[:client] = Forcedotcom::Api::Client.new(auth_hash)
+  session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
+  session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
+end
+
+get "/sobject/:type" do
+  @sobject = params[:type]
+  haml :sobject
+end
+
+get "/sobject/:type/:record_id" do
+  sobject = params[:type]
+  record_id = params[:record_id]
+  @record = session[:client].materialize(sobject).find(record_id)
+  haml :record
 end

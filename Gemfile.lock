@@ -9,12 +9,15 @@ GEM
   specs:
     activesupport (3.0.9)
     addressable (2.2.4)
+    backports (2.3.0)
     faraday (0.6.1)
       addressable (~> 2.2.4)
       multipart-post (~> 1.1.0)
       rack (>= 1.1.0, < 2)
     haml (3.1.2)
     mime-types (1.16)
+    monkey-lib (0.5.4)
+      backports
     multi_json (1.0.3)
     multi_xml (0.2.2)
     multipart-post (1.1.2)
@@ -71,6 +74,16 @@ GEM
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
+    sinatra-advanced-routes (0.5.1)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+      sinatra-sugar (~> 0.5.0)
+    sinatra-reloader (0.5.0)
+      sinatra (~> 1.0)
+      sinatra-advanced-routes (~> 0.5.0)
+    sinatra-sugar (0.5.1)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
     tilt (1.3.2)
 
 PLATFORMS
@@ -81,3 +94,4 @@ DEPENDENCIES
   haml
   omniauth
   sinatra
+  sinatra-reloader

@@ -1,0 +1,10 @@
+.title
+  %h2
+    = @sobject
+.description
+  Records: 
+  - session[:client].materialize(@sobject).all.each do |record|
+    .sobject_record
+      .record_name
+        %a{:href => "/sobject/#{@sobject}/#{record.Id}"}
+          = record.Name
