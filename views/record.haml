@@ -1,4 +1,9 @@
 .page
+  .delete
+    %form{:action => "/sobject/#{params[:type]}/#{@record.Id}", :method => "post"}
+      %input{:type => "hidden", :name => "_method", :value => "DELETE"}
+      %input{:type => "submit", :value => "Delete this record"}
+
   Type:
   %a{:href => "/sobject/#{params[:type]}"}
     = params[:type]

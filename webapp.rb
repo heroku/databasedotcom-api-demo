@@ -7,6 +7,7 @@ require 'forcedotcom/api'
 require 'haml'
 
 use Rack::Session::Cookie
+set :method_override, true
 
 config = YAML.load_file("config/salesforce.yml")
 use OmniAuth::Strategies::Salesforce, config["client_id"], config["client_secret"]
@@ -36,6 +37,12 @@ get "/sobject/:type/:record_id" do
   record_id = params[:record_id]
   @record = session[:client].materialize(sobject).find(record_id)
   haml :record
+end
+
+delete "/sobject/:type/:record_id" do
+  session[:client].delete(params[:type], params[:record_id])
+  session[:message] = "The record was deleted!"
+  redirect to("/sobject/#{params[:type]}")
 end
 
 post "/login" do
