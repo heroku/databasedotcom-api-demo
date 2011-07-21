@@ -1,12 +1,7 @@
 .title
   %h2== #{@sobject} (#{@names_or_ids.total_size} records)
-
+  %a{:href => "/sobject/#{params[:type]}/new"}== Create a new #{params[:type]}
 .page
-  - if @has_next_page
-    %a{:href => '#'}
-      Next Page
-    %br
-    %br
   .records
     %ul
       - while true

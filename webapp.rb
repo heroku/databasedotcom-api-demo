@@ -32,6 +32,32 @@ get "/sobject/:type" do
   haml :sobject
 end
 
+get "/sobject/:type/new" do
+  @sobject = session[:client].materialize(params[:type])
+  haml :new_record
+end
+
+post "/sobject/:type/create" do
+  object_type = params.delete("type")
+  @sobject = session[:client].materialize(object_type)
+  params.each do |attr, value|
+    case @sobject.field_type(attr)
+      when "boolean"
+        params[attr] = (value.casecmp("true") == 0)
+      when "multipicklist"
+        params[attr] = [value]
+      when "currency", "percent", "double"
+        params[attr] = value.to_f
+      when "date"
+        params[attr] = Date.parse(value) rescue Date.today
+      when "datetime"
+        params[attr] = DateTime.parse(value) rescue DateTime.now
+    end
+  end
+  session[:client].create(object_type, params)
+  redirect to("/sobject/#{object_type}")
+end
+
 get "/sobject/:type/:record_id" do
   sobject = params[:type]
   record_id = params[:record_id]

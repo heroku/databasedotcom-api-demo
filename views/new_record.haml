@@ -1,0 +1,8 @@
+%h2== Create a new #{@sobject.sobject_name}
+
+%form{:action => "/sobject/#{@sobject.sobject_name}/create", :method => "post"}
+  - @sobject.attributes.select {|a| @sobject.updateable?(a)}.each do |attr|
+    %label= @sobject.label_for(attr)
+    %input{:type => "textfield", :name => attr, :value => attr == "OwnerId" ? session[:client].user_id : ''}
+    %br
+  %input{:type => "submit", :value => "Create"}
