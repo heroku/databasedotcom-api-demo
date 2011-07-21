@@ -9,7 +9,7 @@ require 'haml'
 use Rack::Session::Cookie
 
 config = YAML.load_file("config/salesforce.yml")
-use OmniAuth::Strategies::Salesforce, config["client_secret"], config["client_id"]
+use OmniAuth::Strategies::Salesforce, config["client_id"], config["client_secret"]
 
 get "/" do
   if session[:client]
@@ -36,4 +36,20 @@ get "/sobject/:type/:record_id" do
   record_id = params[:record_id]
   @record = session[:client].materialize(sobject).find(record_id)
   haml :record
+end
+
+post "/login" do
+  session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
+  begin
+    session[:client].authenticate(:username => params[:username], :password => params[:password] + params[:security_token])
+  rescue Forcedotcom::Api::SalesForceError => err
+    session[:client] = nil
+    session[:message] = err.message
+  end
+  redirect to("/")
+end
+
+get "/logout" do
+  session[:client] = nil
+  redirect to("/")
 end

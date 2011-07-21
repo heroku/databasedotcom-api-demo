@@ -1,2 +1,23 @@
+%h2 Login with your salesforce.com credentials
+.login
+  %form{:action => "/login", :method => "post"}
+    .field
+      .left
+        %label Username
+      .right
+        %input{:type => "textfield", :name => "username"}
+    .field
+      .left
+        %label Password
+      .right
+        %input{:type => "password", :name => "password"}
+    .field
+      .left
+        %label Security Token
+      .right
+        %input{:type => "password", :name => "security_token"}
+    .submit
+      %input{:type => "submit"}
+%h2 or
 %a{:href => "/auth/salesforce"}
-  Login to Salesforce
+  Login via OAuth on Salesforce

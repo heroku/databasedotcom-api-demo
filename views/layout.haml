@@ -7,7 +7,13 @@
 
     #content
       .top_links
-        %a{:href => "/"}
-          Home
+        %a{:href => "/"} Home
+        - if session[:client]
+          |
+          %a{:href => "/logout"} Logout
+      .message
+        - if session[:message]
+          = session[:message]
+          - session[:message] = nil
 
       = yield
