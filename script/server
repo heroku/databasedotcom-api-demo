@@ -1,2 +1,2 @@
 #! /bin/sh
-bundle exec ruby webapp.rb
+bundle exec thin start -p 4567
