@@ -1,8 +1,9 @@
+require "rubygems"
+require "bundler/setup"
 require 'sinatra'
 require "sinatra/reloader"
 require 'oa-oauth'
 require 'yaml'
-require 'rubygems'
 require 'forcedotcom/api'
 require 'haml'
 require 'rack-flash'
