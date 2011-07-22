@@ -12,8 +12,10 @@ use Rack::Session::Cookie
 use Rack::Flash
 set :method_override, true
 
-config = YAML.load_file("config/salesforce.yml")
-use OmniAuth::Strategies::Salesforce, config["client_id"], config["client_secret"]
+config = YAML.load_file("config/salesforce.yml") rescue nil
+client_id = ENV['FORCEDOTCOM_API_CLIENT_ID'] || config["client_id"]
+client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
+use OmniAuth::Strategies::Salesforce, client_id, client_secret
 
 get "/" do
   if session[:client]
