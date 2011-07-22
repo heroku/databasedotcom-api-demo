@@ -5,8 +5,10 @@ require 'yaml'
 require 'rubygems'
 require 'forcedotcom/api'
 require 'haml'
+require 'rack-flash'
 
 use Rack::Session::Cookie
+use Rack::Flash
 set :method_override, true
 
 config = YAML.load_file("config/salesforce.yml")
@@ -42,7 +44,7 @@ post "/sobject/:type/create" do
   object_type = params.delete("type")
   @sobject = session[:client].materialize(object_type)
   new_object = session[:client].create(object_type, coerce_params(params))
-  puts new_object.inspect
+  flash[:notice] = "A new #{object_type} was created!"
   redirect to("/sobject/#{object_type}/#{new_object.Id}")
 end
 
@@ -67,12 +69,13 @@ put "/sobject/:type/:record_id/update" do
   params.delete("_method")
   @sobject = session[:client].materialize(object_type)
   session[:client].update(object_type, record_id, coerce_params(params))
+  flash[:notice] = "The record was updated!"
   redirect to("/sobject/#{object_type}/#{record_id}")
 end
 
 delete "/sobject/:type/:record_id" do
   session[:client].delete(params[:type], params[:record_id])
-  session[:message] = "The record was deleted!"
+  flash[:notice] = "The record was deleted!"
   redirect to("/sobject/#{params[:type]}")
 end
 
@@ -82,7 +85,7 @@ post "/login" do
     session[:client].authenticate(:username => params[:username], :password => params[:password] + params[:security_token])
   rescue Forcedotcom::Api::SalesForceError => err
     session[:client] = nil
-    session[:message] = err.message
+    flash[:notice] = err.message
   end
   redirect to("/")
 end

@@ -5,3 +5,4 @@ gem 'sinatra-reloader'
 gem 'omniauth'
 gem 'haml'
 gem 'forcedotcom-api', :path => "../forcedotcom-api"
+gem 'rack-flash'

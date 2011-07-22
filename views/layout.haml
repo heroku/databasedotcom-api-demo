@@ -12,8 +12,6 @@
           |
           %a{:href => "/logout"} Logout
       .message
-        - if session[:message]
-          = session[:message]
-          - session[:message] = nil
+        = flash[:notice] if flash[:notice]
 
       = yield
