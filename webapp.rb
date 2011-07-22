@@ -34,6 +34,7 @@ end
 
 get "/sobject/:type/new" do
   @sobject = session[:client].materialize(params[:type])
+  @record = @sobject.new
   haml :new_record
 end
 
@@ -43,7 +44,7 @@ post "/sobject/:type/create" do
   params.each do |attr, value|
     case @sobject.field_type(attr)
       when "boolean"
-        params[attr] = (value.casecmp("true") == 0)
+        params[attr] = (value.casecmp("on") == 0)
       when "multipicklist"
         params[attr] = [value]
       when "currency", "percent", "double"
@@ -63,6 +64,37 @@ get "/sobject/:type/:record_id" do
   record_id = params[:record_id]
   @record = session[:client].materialize(sobject).find(record_id)
   haml :record
+end
+
+get "/sobject/:type/:record_id/edit" do
+  sobject = params[:type]
+  record_id = params[:record_id]
+  @sobject = session[:client].materialize(sobject)
+  @record = @sobject.find(record_id)
+  haml :edit
+end
+
+put "/sobject/:type/:record_id/update" do
+  object_type = params.delete("type")
+  record_id = params.delete("record_id")
+  params.delete("_method")
+  @sobject = session[:client].materialize(object_type)
+  params.each do |attr, value|
+    case @sobject.field_type(attr)
+      when "boolean"
+        params[attr] = (value.casecmp("on") == 0)
+      when "multipicklist"
+        params[attr] = [value]
+      when "currency", "percent", "double"
+        params[attr] = value.to_f
+      when "date"
+        params[attr] = Date.parse(value) rescue Date.today
+      when "datetime"
+        params[attr] = DateTime.parse(value) rescue DateTime.now
+    end
+  end
+  session[:client].update(object_type, record_id, params)
+  redirect to("/sobject/#{object_type}")
 end
 
 delete "/sobject/:type/:record_id" do

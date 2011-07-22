@@ -1,0 +1,28 @@
+- is_create = @record.Id.nil? rescue true
+%form{:action => is_create ? "/sobject/#{@sobject.sobject_name}/create" : "/sobject/#{@sobject.sobject_name}/#{@record.Id}/update", :method => "post"}
+  - unless is_create
+    %input{:type => "hidden", :name => "_method", :value => "PUT"}
+  - @sobject.attributes.select {|a| @sobject.updateable?(a)}.each do |attr|
+    .field
+      .left
+        %label= @sobject.label_for(attr)
+      .right
+        - case @sobject.field_type(attr)
+          - when "boolean"
+            %input{:type => "checkbox", :name => attr, :checked => @record.send(attr)}
+          - when "multipicklist"
+            %select{ :multiple => "multiple", :name => "#{attr}[]"}
+              - @sobject.picklist_values(attr).each do |value|
+                - if value["active"]
+                  %option{ :value => value["value"], :selected => @record.send(attr) && @record.send(attr).include?(value["value"]) }= value["label"]
+          - when "picklist"
+            %select{:name => attr}
+              - @sobject.picklist_values(attr).each do |value|
+                - if value["active"]
+                  %option{ :value => value["value"], :selected => value["value"] == @record.send(attr) }= value["label"]
+          - else
+            %input{:type => "textfield", :name => attr, :value => attr == "OwnerId" ? session[:client].user_id : (@record[attr] rescue '')}
+    %br
+  %input{:type => "submit", :value => is_create ? "Create" : "Update"}
+  %a{:href => "/sobject/#{@sobject.sobject_name}#{is_create ? '' : '/' + @record.Id }"}
+    %input{:type => "button", :value => "Cancel"}

@@ -11,10 +11,21 @@ body {
   margin-bottom: 20px;
 }
 
+.message {
+  color: red;
+  background: yellow;
+  width: 500px;
+  margin: 0 auto;
+}
+
 .page {
   text-align: left;
   width: 500px;
   margin: 0 auto;
+}
+
+.page .actions {
+  text-align: center;
 }
 
 .login {
@@ -23,25 +34,23 @@ body {
   margin: 0 auto;
 }
 
-.login .field {
+.field {
   display: inline-block;
 }
 
-.message {
-  color: red;
-  background: yellow;
-}
-
-.login .field .left {
+.left {
   width: 150px;
   margin: 0 auto;
   float: left;
+  text-align: right;
 }
 
-.login .field .right {
-  width: 150px;
+.right {
+  width: 135px;
   margin: 0 auto;
   float: right;
+  text-align: left;
+  padding: 0 0 0 15px;
 }
 
 .login .submit {
@@ -63,6 +72,14 @@ body {
   background-color: #ccc;
 }
 
-.page li a {
+.attr {
+  text-align: left;
+}
+
+a {
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

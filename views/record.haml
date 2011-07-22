@@ -1,13 +1,15 @@
 .page
-  .delete
+  .actions
     %form{:action => "/sobject/#{params[:type]}/#{@record.Id}", :method => "post"}
       %input{:type => "hidden", :name => "_method", :value => "DELETE"}
       %input{:type => "submit", :value => "Delete this record"}
+    %a{:href => "/sobject/#{params[:type]}/#{@record.Id}/edit"} Edit this record
+  %p
 
-  Type:
-  %a{:href => "/sobject/#{params[:type]}"}
-    = params[:type]
-
-  - @record.class.attributes.each do |attr|
-    .field
-      = "#{attr} : #{@record.send(attr)}"
+  %div
+    Type:
+    %a{:href => "/sobject/#{params[:type]}"}
+      = params[:type]
+    - @record.class.attributes.each do |attr|
+      .attr
+        = "#{attr} : #{@record.send(attr)}"
