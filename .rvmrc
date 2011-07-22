@@ -1,2 +1,2 @@
-rvm use ruby-1.9.2-p0@forcedotcom-api-demo --create
+rvm use ruby-1.9.2-p180@forcedotcom-api-demo --create
 export PATH=~/workspace/forcedotcom-api-demo/bin:$PATH
