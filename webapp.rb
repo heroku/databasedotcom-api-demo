@@ -41,22 +41,9 @@ end
 post "/sobject/:type/create" do
   object_type = params.delete("type")
   @sobject = session[:client].materialize(object_type)
-  params.each do |attr, value|
-    case @sobject.field_type(attr)
-      when "boolean"
-        params[attr] = (value.casecmp("on") == 0)
-      when "multipicklist"
-        params[attr] = [value]
-      when "currency", "percent", "double"
-        params[attr] = value.to_f
-      when "date"
-        params[attr] = Date.parse(value) rescue Date.today
-      when "datetime"
-        params[attr] = DateTime.parse(value) rescue DateTime.now
-    end
-  end
-  session[:client].create(object_type, params)
-  redirect to("/sobject/#{object_type}")
+  new_object = session[:client].create(object_type, coerce_params(params))
+  puts new_object.inspect
+  redirect to("/sobject/#{object_type}/#{new_object.Id}")
 end
 
 get "/sobject/:type/:record_id" do
@@ -79,22 +66,8 @@ put "/sobject/:type/:record_id/update" do
   record_id = params.delete("record_id")
   params.delete("_method")
   @sobject = session[:client].materialize(object_type)
-  params.each do |attr, value|
-    case @sobject.field_type(attr)
-      when "boolean"
-        params[attr] = (value.casecmp("on") == 0)
-      when "multipicklist"
-        params[attr] = [value]
-      when "currency", "percent", "double"
-        params[attr] = value.to_f
-      when "date"
-        params[attr] = Date.parse(value) rescue Date.today
-      when "datetime"
-        params[attr] = DateTime.parse(value) rescue DateTime.now
-    end
-  end
-  session[:client].update(object_type, record_id, params)
-  redirect to("/sobject/#{object_type}")
+  session[:client].update(object_type, record_id, coerce_params(params))
+  redirect to("/sobject/#{object_type}/#{record_id}")
 end
 
 delete "/sobject/:type/:record_id" do
@@ -117,4 +90,22 @@ end
 get "/logout" do
   session[:client] = nil
   redirect to("/")
+end
+
+def coerce_params(params)
+  params.each do |attr, value|
+    case @sobject.field_type(attr)
+      when "boolean"
+        params[attr] = value.to_i != 0
+      when "multipicklist"
+        params[attr] = [value]
+      when "currency", "percent", "double"
+        params[attr] = value.to_f
+      when "date"
+        params[attr] = Date.parse(value) rescue Date.today
+      when "datetime"
+        params[attr] = DateTime.parse(value) rescue DateTime.now
+    end
+  end
+  params
 end

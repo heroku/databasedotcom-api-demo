@@ -9,7 +9,8 @@
       .right
         - case @sobject.field_type(attr)
           - when "boolean"
-            %input{:type => "checkbox", :name => attr, :checked => @record.send(attr)}
+            %input{:type => "hidden", :name => attr, :value => "0"}
+            %input{:type => "checkbox", :name => attr, :checked => @record.send(attr), :value => "1"}
           - when "multipicklist"
             %select{ :multiple => "multiple", :name => "#{attr}[]"}
               - @sobject.picklist_values(attr).each do |value|
