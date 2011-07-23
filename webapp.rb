@@ -26,7 +26,7 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
+  session[:client] = Forcedotcom::Api::Client.new(:client_id => client_id, :client_secret => client_secret)
   session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
 end
