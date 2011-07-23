@@ -83,3 +83,20 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.search {
+  display: inline-block;
+}
+
+.search_box {
+  float: left;
+}
+
+.search_box input {
+  width: 200px;
+}
+
+.search_button {
+  float: left;
+  padding-left: 10px;
+}

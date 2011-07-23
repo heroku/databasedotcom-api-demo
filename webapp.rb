@@ -82,6 +82,11 @@ delete "/sobject/:type/:record_id" do
   redirect to("/sobject/#{params[:type]}")
 end
 
+get "/search" do
+  @results = session[:client].search(params[:search])
+  haml :results
+end
+
 post "/login" do
   session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
   begin

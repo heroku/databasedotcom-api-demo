@@ -1,0 +1,10 @@
+%h2
+  Your search results:
+
+.page
+  %ul
+    - @results.each do |result|
+      %li
+        .result
+          %a{:href => "/sobject/#{result.class.sobject_name}/#{result.Id}"}
+            = result.Name rescue result.Id
