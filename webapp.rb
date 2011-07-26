@@ -26,7 +26,7 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  session[:client] = Forcedotcom::Api::Client.new(:client_id => client_id, :client_secret => client_secret)
+  session[:client] = Forcedotcom::Api::Sobject::Client.new(:client_id => client_id, :client_secret => client_secret)
   session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
 end
@@ -88,7 +88,7 @@ get "/search" do
 end
 
 post "/login" do
-  session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
+  session[:client] = Forcedotcom::Api::Sobject::Client.new("config/salesforce.yml")
   begin
     session[:client].authenticate(:username => params[:username], :password => params[:password] + params[:security_token])
   rescue Forcedotcom::Api::SalesForceError => err

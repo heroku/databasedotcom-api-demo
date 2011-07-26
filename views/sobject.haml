@@ -9,6 +9,6 @@
           %li
             .sobject_record
               %a{:href => "/sobject/#{@sobject}/#{record.Id}"}
-                = record.Name || record.Id
+                = record.Name rescue record.Id
         - break unless @names_or_ids.next_page?
         - @names_or_ids = @names_or_ids.next_page
