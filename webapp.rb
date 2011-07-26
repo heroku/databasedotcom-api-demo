@@ -15,6 +15,7 @@ set :method_override, true
 config = YAML.load_file("config/salesforce.yml") rescue nil
 client_id = ENV['FORCEDOTCOM_API_CLIENT_ID'] || config["client_id"]
 client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
+debugging = ENV['FORCEDOTCOM_API_DEBUGGING'] || config["debugging"]
 use OmniAuth::Strategies::Salesforce, client_id, client_secret
 
 get "/" do
@@ -26,7 +27,7 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  session[:client] = Forcedotcom::Api::Sobject::Client.new(:client_id => client_id, :client_secret => client_secret)
+  session[:client] = Forcedotcom::Api::Sobject::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging)
   session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
 end
