@@ -14,3 +14,9 @@
     .email
       Email:
       = @user.raw_hash["email"]
+  .groups
+    %h3 Groups
+    - @user.groups.each do |group|
+      .group
+        %a{:href => "/groups/#{group.id}"}
+          = group.raw_hash["name"]
