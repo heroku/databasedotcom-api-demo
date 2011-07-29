@@ -1,9 +1,10 @@
-GIT
-  remote: https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git
-  revision: df61d155abffd68dd2b5db6fe0880eaa6311d2d6
+PATH
+  remote: ../forcedotcom-api
   specs:
     forcedotcom-api (0.0.1)
       activesupport (> 2.0.0)
+      i18n (>= 0.6.0)
+      multipart-post (>= 1.1.3)
 
 GEM
   remote: http://rubygems.org/
@@ -16,19 +17,20 @@ GEM
     faraday (0.6.1)
       addressable (~> 2.2.4)
       multipart-post (~> 1.1.0)
-      rack (>= 1.1.0, < 2)
+      rack (< 2, >= 1.1.0)
     haml (3.1.2)
-    heroku (2.3.6)
+    heroku (2.4.0)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
       term-ansicolor (~> 1.0.5)
+    i18n (0.6.0)
     launchy (2.0.3)
     mime-types (1.16)
     monkey-lib (0.5.4)
       backports
     multi_json (1.0.3)
     multi_xml (0.2.2)
-    multipart-post (1.1.2)
+    multipart-post (1.1.3)
     net-ldap (0.2.2)
     nokogiri (1.4.7)
     oa-basic (0.2.6)
@@ -69,7 +71,7 @@ GEM
       oa-oauth (= 0.2.6)
       oa-openid (= 0.2.6)
     pyu-ruby-sasl (0.0.3.3)
-    rack (1.3.1)
+    rack (1.3.2)
     rack-flash (0.1.2)
       rack
     rack-openid (1.3.1)
@@ -83,7 +85,7 @@ GEM
     rubyntlm (0.1.1)
     sinatra (1.2.6)
       rack (~> 1.1)
-      tilt (>= 1.2.2, < 2.0)
+      tilt (< 2.0, >= 1.2.2)
     sinatra-advanced-routes (0.5.1)
       monkey-lib (~> 0.5.0)
       sinatra (~> 1.0)

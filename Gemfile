@@ -5,7 +5,13 @@ gem 'sinatra-reloader'
 gem 'omniauth'
 gem 'haml'
 gem 'rack-flash'
-gem 'forcedotcom-api', :git => "https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git"
+
+if Dir.exists?("../forcedotcom-api")
+  gem 'forcedotcom-api', :path => "../forcedotcom-api"
+else
+  gem 'forcedotcom-api', :git => "https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git"
+end
+
 gem 'thin'
 
 group :development do

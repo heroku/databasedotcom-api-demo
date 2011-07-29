@@ -18,6 +18,10 @@ client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
 debugging = ENV['FORCEDOTCOM_API_DEBUGGING'] || config["debugging"]
 use OmniAuth::Strategies::Salesforce, client_id, client_secret
 
+module MySobjects
+
+end
+
 get "/" do
   if session[:client]
     haml :user_home
@@ -27,7 +31,7 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  session[:client] = Forcedotcom::Api::Sobject::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging)
+  session[:client] = Forcedotcom::Api::Sobject::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging, :sobject_module => MySobjects)
   session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
 end
