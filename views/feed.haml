@@ -10,9 +10,16 @@
           .feed_item
             %a{:href => "/users/#{item.raw_hash["user"]["id"]}"}= item.raw_hash["user"]["name"]
             = item.raw_hash["body"]["text"]
-            - if item.likes.total_size > 0
-              .likes
-                == #{item.likes.total_size} people like this#{item.raw_hash["currentUserLike"] ? ', including you' : ''}
+            .likes
+              - current_user_likes = item.raw_hash["currentUserLike"]
+              - if item.likes.total_size > 0
+                == #{item.likes.total_size} people like this#{current_user_likes ? ', including you' : ''}
+              - if current_user_likes
+                %form{:action => "/feed-item/#{item.id}/unlike?return_to=#{@feed_type}", :method => "post"}
+                  %input{:type => "submit", :value => "Unlike this"}
+              - else
+                %form{:action => "/feed-item/#{item.id}/like?return_to=#{@feed_type}", :method => "post"}
+                  %input{:type => "submit", :value => "Like this"}
             - if item.raw_hash["comments"]["total"] > 0
               .comments
                 %b Comments

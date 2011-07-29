@@ -81,7 +81,7 @@ put "/sobject/:type/:record_id/update" do
 end
 
 delete "/sobject/:type/:record_id" do
-  session[:client].delete(params[:type], params[:record_id])
+  session[:client].destroy(params[:type], params[:record_id])
   flash[:notice] = "The record was deleted!"
   redirect to("/sobject/#{params[:type]}")
 end
@@ -121,6 +121,19 @@ end
 post "/feed-item/:id/comment" do
   item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
   item.comment(params[:comment])
+  redirect to("/feeds/#{params[:return_to]}")
+end
+
+post "/feed-item/:id/like" do
+  item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
+  item.like
+  redirect to("/feeds/#{params[:return_to]}")
+end
+
+post "/feed-item/:id/unlike" do
+  item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
+  like = Forcedotcom::Api::Chatter::Like.find(session[:client], item.raw_hash["currentUserLike"]["id"])
+  like.delete
   redirect to("/feeds/#{params[:return_to]}")
 end
 
