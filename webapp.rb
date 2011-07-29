@@ -7,6 +7,7 @@ require 'yaml'
 require 'forcedotcom/api'
 require 'haml'
 require 'rack-flash'
+require './vmforce_strategy'
 
 use Rack::Session::Cookie
 use Rack::Flash
@@ -18,9 +19,7 @@ client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
 debugging = ENV['FORCEDOTCOM_API_DEBUGGING'] || config["debugging"]
 use OmniAuth::Strategies::Salesforce, client_id, client_secret
 
-module MySobjects
-
-end
+module MySobjects; end;
 
 get "/" do
   if session[:client]
