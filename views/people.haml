@@ -6,5 +6,6 @@
       - @entities.each do |ent|
         %li
           .ent
-            = ent.name
+            %a{:href => "/#{@type.downcase}/#{ent.id}"}
+              = ent.name
 

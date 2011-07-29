@@ -8,5 +8,5 @@
       - feed.each do |item|
         %li
           .feed_item
-            %a{:href => '#'}= item.raw_hash["user"]["name"]
-            = item.raw_hash["body"]["messageSegments"].collect{ |seg| seg["text"] }.join('')
+            %a{:href => "/users/#{item.raw_hash["user"]["id"]}"}= item.raw_hash["user"]["name"]
+            = item.raw_hash["body"]["text"]

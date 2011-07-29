@@ -1,0 +1,9 @@
+.page
+  %h2
+    = @group.name
+
+  .info
+    .member_count
+      == (#{@group.raw_hash["memberCount"]} members)
+    .description
+      == Description: #{@group.raw_hash["description"]}

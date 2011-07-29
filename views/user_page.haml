@@ -1,0 +1,16 @@
+.page
+  %h2
+    = @user.name
+
+  .status
+    %b Status: 
+    = @user.raw_hash["currentStatus"]["body"]["text"]
+
+  .info
+    .address
+      Address:
+      - address = @user.raw_hash["address"]
+      == #{address["street"]}, #{address["city"]}, #{address["state"]} #{address["zip"]}
+    .email
+      Email:
+      = @user.raw_hash["email"]

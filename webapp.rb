@@ -100,8 +100,18 @@ end
 
 get "/chatter/:type" do
   @entities = Forcedotcom::Api::Chatter.const_get(params[:type][0..-2].capitalize).all(session[:client])
-  @type = params[:type][0..-2].capitalize
+  @type = params[:type].capitalize
   haml :people
+end
+
+get "/users/:id" do
+  @user = Forcedotcom::Api::Chatter::User.find(session[:client], params[:id])
+  haml :user_page
+end
+
+get "/groups/:id" do
+  @group = Forcedotcom::Api::Chatter::Group.find(session[:client], params[:id])
+  haml :group_page
 end
 
 post "/login" do
