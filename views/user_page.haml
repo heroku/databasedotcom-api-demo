@@ -20,3 +20,20 @@
       .group
         %a{:href => "/groups/#{group.id}"}
           = group.raw_hash["name"]
+
+  .following
+    %h3 Following
+    - following = @user.following
+    = following.empty? ? "none" : ""
+    - following.each do |follow|
+      .follow
+        = "#{follow.raw_hash["subject"]["name"]} (#{follow.raw_hash["subject"]["type"]})"
+
+  .followers
+    %h3 Followers
+    - followers = @user.followers
+    = followers.empty? ? "none" : ""
+    - followers.each do |follower|
+      .follower
+        %a{:href => "/users/#{follower.raw_hash["subject"]["id"]}"}
+          = follower.raw_hash["subject"]["name"]
