@@ -98,6 +98,12 @@ get "/feeds/:feed_type" do
   haml :feed
 end
 
+get "/chatter/:type" do
+  @entities = Forcedotcom::Api::Chatter.const_get(params[:type][0..-2].capitalize).all(session[:client])
+  @type = params[:type][0..-2].capitalize
+  haml :people
+end
+
 post "/login" do
   session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
   begin

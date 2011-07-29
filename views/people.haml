@@ -1,0 +1,10 @@
+.page
+  %h2
+    = @type
+  .entities
+    %ul
+      - @entities.each do |ent|
+        %li
+          .ent
+            = ent.name
+
