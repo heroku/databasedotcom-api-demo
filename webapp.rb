@@ -104,6 +104,11 @@ get "/chatter/:type" do
   haml :people
 end
 
+post "/chatter/users/:id/post_status" do
+  Forcedotcom::Api::Chatter::User.post_status(session[:client], params[:id], params[:status])
+  redirect to("/users/#{params[:id]}")
+end
+
 get "/users/:id" do
   @user = Forcedotcom::Api::Chatter::User.find(session[:client], params[:id])
   haml :user_page
