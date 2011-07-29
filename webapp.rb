@@ -118,6 +118,12 @@ get "/groups/:id" do
   haml :group_page
 end
 
+post "/feed-item/:id/comment" do
+  item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
+  item.comment(params[:comment])
+  redirect to("/feeds/#{params[:return_to]}")
+end
+
 post "/login" do
   session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
   begin

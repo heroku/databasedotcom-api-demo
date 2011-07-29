@@ -15,8 +15,13 @@
                 == #{item.likes.total_size} people like this#{item.raw_hash["currentUserLike"] ? ', including you' : ''}
             - if item.raw_hash["comments"]["total"] > 0
               .comments
+                %b Comments
                 - item.comments.each do |comment_hash|
                   - comment = Forcedotcom::Api::Chatter::Comment.new(@client, comment_hash)
                   .comment
                     %a{:href => "/users/#{comment.user["id"]}"}= comment.user["name"]
                     = comment.raw_hash["body"]["text"]
+            .comment_form
+              %form{:action => "/feed-item/#{item.id}/comment?return_to=#{@feed_type}", :method => "post"}
+                %input{:type => "text", :name => "comment"}
+                %input{:type => "submit", :value => "Comment"}
