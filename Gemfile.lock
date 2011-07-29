@@ -1,5 +1,6 @@
-PATH
-  remote: ../forcedotcom-api
+GIT
+  remote: https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git
+  revision: f2e89cb2091fd6110f6673cb1d9888f215984abe
   specs:
     forcedotcom-api (0.0.1)
       activesupport (> 2.0.0)
