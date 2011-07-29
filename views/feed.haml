@@ -10,3 +10,13 @@
           .feed_item
             %a{:href => "/users/#{item.raw_hash["user"]["id"]}"}= item.raw_hash["user"]["name"]
             = item.raw_hash["body"]["text"]
+            - if item.likes.total_size > 0
+              .likes
+                == #{item.likes.total_size} people like this#{item.raw_hash["currentUserLike"] ? ', including you' : ''}
+            - if item.raw_hash["comments"]["total"] > 0
+              .comments
+                - item.comments.each do |comment_hash|
+                  - comment = Forcedotcom::Api::Chatter::Comment.new(@client, comment_hash)
+                  .comment
+                    %a{:href => "/users/#{comment.user["id"]}"}= comment.user["name"]
+                    = comment.raw_hash["body"]["text"]
