@@ -1,0 +1,12 @@
+.page
+  %h2
+    = "#{@feed_type.camelize} Feed"
+
+  .feed
+    - feed = Forcedotcom::Api::Chatter.const_get("#{@feed_type.camelize}Feed").find(@client, "me")
+    %ul
+      - feed.each do |item|
+        %li
+          .feed_item
+            %a{:href => '#'}= item.raw_hash["user"]["name"]
+            = item.raw_hash["body"]["messageSegments"].collect{ |seg| seg["text"] }.join('')

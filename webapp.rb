@@ -31,7 +31,7 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  session[:client] = Forcedotcom::Api::Sobject::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging, :sobject_module => MySobjects)
+  session[:client] = Forcedotcom::Api::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging, :sobject_module => MySobjects)
   session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
 end
@@ -92,8 +92,14 @@ get "/search" do
   haml :results
 end
 
+get "/feeds/:feed_type" do
+  @client = session[:client]
+  @feed_type = params[:feed_type]
+  haml :feed
+end
+
 post "/login" do
-  session[:client] = Forcedotcom::Api::Sobject::Client.new("config/salesforce.yml")
+  session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
   begin
     session[:client].authenticate(:username => params[:username], :password => params[:password] + params[:security_token])
   rescue Forcedotcom::Api::SalesForceError => err

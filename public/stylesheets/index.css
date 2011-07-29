@@ -100,3 +100,17 @@ a:hover {
   float: left;
   padding-left: 10px;
 }
+
+h2 {
+  text-align: center;
+}
+
+.chatter_links {
+  text-align: center;
+  display: inline-block;
+}
+
+.feed_link {
+  float: left;
+  margin: 0 5px;
+}

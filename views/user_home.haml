@@ -1,3 +1,11 @@
+%h2 Chatter Feeds
+.chatter_links
+  - feeds = %w(news user_profile record to people groups files company)
+  - feeds.each do |feed|
+    .feed_link
+      %a{:href => "/feeds/#{feed}"}= feed == "to" ? "To-Me" : feed.camelize
+
+%h2 Classes in the database
 .search
   %form{:action => '/search'}
     .search_box
@@ -5,7 +13,6 @@
     .search_button
       %input{:type => "submit", :value => "SOSL Search"}
 
-%h2 Classes in the database
 .page
   %ul
     - session[:client].list_sobjects.each do |sobject|
