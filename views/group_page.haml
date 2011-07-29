@@ -7,3 +7,11 @@
       == (#{@group.raw_hash["memberCount"]} members)
     .description
       == Description: #{@group.raw_hash["description"]}
+
+  .members
+    %h3 Members
+    - @group.members.each do |member|
+      .member
+        %a{:href => "/users/#{member.raw_hash["user"]["id"]}"}
+          = member.raw_hash["user"]["name"]
+    

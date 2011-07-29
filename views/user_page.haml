@@ -10,7 +10,7 @@
     .address
       Address:
       - address = @user.raw_hash["address"]
-      == #{address["street"]}, #{address["city"]}, #{address["state"]} #{address["zip"]}
+      == #{address["street"]} #{address["city"]} #{address["state"]} #{address["zip"]}
     .email
       Email:
       = @user.raw_hash["email"]

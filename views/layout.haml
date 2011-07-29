@@ -8,6 +8,10 @@
     #content
       .top_links
         %a{:href => "/"} Home
+        |
+        %a{:href => "/chatter/users"} Users
+        |
+        %a{:href => "/chatter/groups"} Groups
         - if session[:client]
           |
           %a{:href => "/logout"} Logout
