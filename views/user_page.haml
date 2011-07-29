@@ -2,6 +2,9 @@
   %h2
     = @user.name
 
+  .photo
+    %img{:src => "https://#{@user.client.host}#{@user.raw_hash["photo"]["smallPhotoUrl"]}"}
+
   .status
     %b Status: 
     = @user.raw_hash["currentStatus"]["body"]["text"]

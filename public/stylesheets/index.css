@@ -114,3 +114,8 @@ h2 {
   float: left;
   margin: 0 5px;
 }
+
+.photo {
+  text-align: center;
+  margin: 20px;
+}
