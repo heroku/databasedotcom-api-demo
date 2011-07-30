@@ -13,7 +13,7 @@ use Rack::Session::Cookie
 use Rack::Flash
 set :method_override, true
 
-config = YAML.load_file("config/salesforce.yml") rescue nil
+config = YAML.load_file("config/salesforce.yml") rescue {}
 client_id = ENV['FORCEDOTCOM_API_CLIENT_ID'] || config["client_id"]
 client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
 debugging = ENV['FORCEDOTCOM_API_DEBUGGING'] || config["debugging"]
