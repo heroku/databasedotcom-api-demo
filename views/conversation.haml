@@ -4,14 +4,14 @@
 
   .conversation
     %ul
-      - @conversation.raw_hash["messages"]["messages"].reverse.each do |message|
+      - @conversation.messages.reverse.each do |message|
         %li
           .message
             %em
-              = message["sender"]["name"]
-            = message["body"]["text"]
+              = message.raw_hash["sender"]["name"]
+            = message.raw_hash["body"]["text"]
 
-    %form{:action => "/messages/#{@conversation.raw_hash["messages"]["messages"].last["id"]}/reply?return_to=#{@conversation.id}", :method => "post"}
+    %form{:action => "/messages/#{@conversation.messages.last.id}/reply?return_to=#{@conversation.id}", :method => "post"}
       %input{:type => "text", :name => "text", :size => 80}
       %input{:type => "submit", :value => "Reply"}
 
