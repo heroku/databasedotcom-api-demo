@@ -15,7 +15,7 @@
         - if session[:client]
           |
           %a{:href => "/logout"} Logout
-      .message
+      .flash_message
         = flash[:notice] if flash[:notice]
 
       = yield

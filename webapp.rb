@@ -143,6 +143,16 @@ delete "/feed-item/:id/like" do
   redirect to("/feeds/#{params[:return_to]}")
 end
 
+get "/conversations/:id" do
+  @conversation = Forcedotcom::Api::Chatter::Conversation.find(session[:client], params[:id], :user_id => "me")
+  haml :conversation
+end
+
+post "/messages/:id/reply" do
+  Forcedotcom::Api::Chatter::Message.reply(session[:client], params[:id], params[:text])
+  redirect to("/conversations/#{params[:return_to]}")
+end
+
 post "/login" do
   session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
   begin

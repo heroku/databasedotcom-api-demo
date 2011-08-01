@@ -1,0 +1,17 @@
+.page
+  %h2
+    == Conversation between #{@conversation.raw_hash["members"].collect {|m| m["name"]}.join(" and ")}
+
+  .conversation
+    %ul
+      - @conversation.raw_hash["messages"]["messages"].reverse.each do |message|
+        %li
+          .message
+            %em
+              = message["sender"]["name"]
+            = message["body"]["text"]
+
+    %form{:action => "/messages/#{@conversation.raw_hash["messages"]["messages"].last["id"]}/reply?return_to=#{@conversation.id}", :method => "post"}
+      %input{:type => "text", :name => "text", :size => 80}
+      %input{:type => "submit", :value => "Reply"}
+

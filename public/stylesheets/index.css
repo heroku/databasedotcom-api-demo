@@ -11,7 +11,7 @@ body {
   margin-bottom: 20px;
 }
 
-.message {
+.flash_message {
   color: red;
   background: yellow;
   width: 500px;
