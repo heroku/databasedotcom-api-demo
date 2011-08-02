@@ -3,7 +3,7 @@
     = @user.name
 
   .photo
-    %img{:src => "https://#{@user.client.host}#{@user.raw_hash["photo"]["smallPhotoUrl"]}"}
+    %img{:src => URI.join(session[:client].instance_url, @user.raw_hash["photo"]["smallPhotoUrl"]) + "?oauth_token=#{session[:client].oauth_token}"}
 
   .status
     %b Status: 
