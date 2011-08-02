@@ -94,6 +94,14 @@ end
 get "/feeds/:feed_type" do
   @client = session[:client]
   @feed_type = params[:feed_type]
+  @feed_items = Forcedotcom::Api::Chatter.const_get("#{@feed_type.camelize}Feed").find(@client, "me")
+  haml :feed
+end
+
+get "/filter_feeds/:label/:prefix" do
+  @client = session[:client]
+  @feed_type = params[:label]
+  @feed_items = Forcedotcom::Api::Chatter::FilterFeed.find(@client, "me", params[:prefix])
   haml :feed
 end
 

@@ -4,6 +4,9 @@
   - feeds.each do |feed|
     .feed_link
       %a{:href => "/feeds/#{feed}"}= feed == "to" ? "To-Me" : feed.camelize
+  - Forcedotcom::Api::Chatter::FilterFeed.feeds(session[:client])["feeds"].each do |filter_feed|
+    %a{:href => "/filter_feeds/#{filter_feed["label"]}/#{filter_feed["feedUrl"].match(/\/(\d+)$/)[1]}"}
+      = filter_feed["label"]
 
 %h2 Conversations
 .conversation_links

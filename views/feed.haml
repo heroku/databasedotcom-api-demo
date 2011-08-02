@@ -3,9 +3,8 @@
     = "#{@feed_type.camelize} Feed"
 
   .feed
-    - feed = Forcedotcom::Api::Chatter.const_get("#{@feed_type.camelize}Feed").find(@client, "me")
     %ul
-      - feed.each do |item|
+      - @feed_items.each do |item|
         %li
           .feed_item
             %a{:href => "/users/#{item.raw_hash["user"]["id"]}"}= item.raw_hash["user"]["name"]
