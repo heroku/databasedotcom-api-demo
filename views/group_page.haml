@@ -2,6 +2,9 @@
   %h2
     = @group.name
 
+  .photo
+    %img{:src => URI.join(session[:client].instance_url, @group.raw_hash["photo"]["smallPhotoUrl"]) + "?oauth_token=#{session[:client].oauth_token}"}
+
   .info
     .member_count
       == (#{@group.raw_hash["memberCount"]} members)
