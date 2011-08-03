@@ -1,6 +1,6 @@
 GIT
   remote: https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git
-  revision: 1ef2b8a7303c6496de8220dab234bf2d47da21d2
+  revision: 3c070473332ce279a02b045087a42da8ee46fd73
   specs:
     forcedotcom-api (1.0.0)
       multipart-post (>= 1.1.3)
