@@ -102,10 +102,19 @@ get "/search" do
   haml :results
 end
 
+get "/chatter_search" do
+  @client = session[:client]
+  @feed_type = "Trending Topic"
+  @feed_items = Forcedotcom::Api::Chatter::FeedItem.search(session[:client], params[:q])
+  @return_to = "/chatter_search?q=#{params[:q]}"
+  haml :feed
+end
+
 get "/feeds/:feed_type" do
   @client = session[:client]
   @feed_type = params[:feed_type]
   @feed_items = Forcedotcom::Api::Chatter.const_get("#{@feed_type.camelize}Feed").find(@client, "me")
+  @return_to = "/feeds/#{params[:feed_type]}"
   haml :feed
 end
 
@@ -113,6 +122,7 @@ get "/filter_feeds/:label/:prefix" do
   @client = session[:client]
   @feed_type = params[:label]
   @feed_items = Forcedotcom::Api::Chatter::FilterFeed.find(@client, "me", params[:prefix])
+  @return_to = "/feeds/#{params[:feed_type]}"
   haml :feed
 end
 
@@ -140,26 +150,26 @@ end
 post "/feed-item/:id/comment" do
   item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
   item.comment(params[:comment])
-  redirect to("/feeds/#{params[:return_to]}")
+  redirect to(params[:return_to])
 end
 
 delete "/comment/:id" do
   comment = Forcedotcom::Api::Chatter::Comment.find(session[:client], params[:id])
   comment.delete
-  redirect to("/feeds/#{params[:return_to]}")
+  redirect to(params[:return_to])
 end
 
 post "/feed-item/:id/like" do
   item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
   item.like
-  redirect to("/feeds/#{params[:return_to]}")
+  redirect to(params[:return_to])
 end
 
 delete "/feed-item/:id/like" do
   item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
   like = Forcedotcom::Api::Chatter::Like.find(session[:client], item.raw_hash["currentUserLike"]["id"])
   like.delete
-  redirect to("/feeds/#{params[:return_to]}")
+  redirect to(params[:return_to])
 end
 
 get "/conversations/:id" do
@@ -169,7 +179,7 @@ end
 
 post "/messages/:id/reply" do
   Forcedotcom::Api::Chatter::Message.reply(session[:client], params[:id], params[:text])
-  redirect to("/conversations/#{params[:return_to]}")
+  redirect to(params[:return_to])
 end
 
 post "/login" do

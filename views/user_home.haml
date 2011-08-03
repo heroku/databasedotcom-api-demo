@@ -16,6 +16,11 @@
       %a{:href => "/conversations/#{conversation.id}"}
         = conversation.raw_hash["members"].collect {|m| m["name"]}.join(" and ")
 
+%h2 Trending Topics
+- session[:client].trending_topics.each do |topic|
+  .trending_topic
+    %a{:href => "/chatter_search?q=#{topic}"}= topic
+    
 %h2 Classes in the database
 .search
   %form{:action => '/search'}

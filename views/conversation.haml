@@ -11,7 +11,7 @@
               = message.raw_hash["sender"]["name"]
             = message.raw_hash["body"]["text"]
 
-    %form{:action => "/messages/#{@conversation.messages.last.id}/reply?return_to=#{@conversation.id}", :method => "post"}
+    %form{:action => "/messages/#{@conversation.messages.last.id}/reply?return_to=/conversations/#{@conversation.id}", :method => "post"}
       %input{:type => "text", :name => "text", :size => 80}
       %input{:type => "submit", :value => "Reply"}
 
