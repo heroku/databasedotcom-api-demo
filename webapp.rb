@@ -122,7 +122,7 @@ get "/filter_feeds/:label/:prefix" do
   @client = session[:client]
   @feed_type = params[:label]
   @feed_items = Forcedotcom::Api::Chatter::FilterFeed.find(@client, "me", params[:prefix])
-  @return_to = "/feeds/#{params[:feed_type]}"
+  @return_to = "/filter_feeds/#{params[:label]}/#{params[:prefix]}"
   haml :feed
 end
 
