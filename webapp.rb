@@ -21,6 +21,17 @@ use OmniAuth::Strategies::Salesforce, client_id, client_secret
 
 module MySobjects; end;
 
+error Forcedotcom::Api::SalesForceError do
+  exception = env['sinatra.error']
+  if exception.error_code == "INVALID_SESSON_ID"
+    session[:client] = nil
+    flash[:notice] = "Your session expired and you were logged out!"
+  else
+    flash[:notice] = "#{exception.error_code}: #{exception.message}"
+  end
+  redirect to("/")
+end
+
 get "/" do
   if session[:client]
     haml :user_home
