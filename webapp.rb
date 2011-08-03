@@ -23,7 +23,7 @@ module MySobjects; end;
 
 error Forcedotcom::Api::SalesForceError do
   exception = env['sinatra.error']
-  if exception.error_code == "INVALID_SESSON_ID"
+  if exception.error_code == "INVALID_SESSION_ID"
     session[:client] = nil
     flash[:notice] = "Your session expired and you were logged out!"
   else
