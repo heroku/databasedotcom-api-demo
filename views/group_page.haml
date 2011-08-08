@@ -17,4 +17,12 @@
       .member
         %a{:href => "/users/#{member.raw_hash["user"]["id"]}"}
           = member.raw_hash["user"]["name"]
-    
+
+  - membership = @group.members.detect {|f| f.raw_hash["user"]["id"] == session[:client].user_id}
+  - if membership
+    %form{:action => "/group-memberships/#{membership.id}?return_to=/groups/#{@group.id}", :method => "post"}
+      %input{:type => "hidden", :name => "_method", :value => "DELETE"}
+      %input{:type => "submit", :value => "Leave this group"}
+  - else
+    %form{:action => "/groups/#{@group.id}/join?return_to=/groups/#{@group.id}", :method => "post"}
+      %input{:type => "submit", :value => "Join this group"}

@@ -46,3 +46,13 @@
       .follower
         %a{:href => "/users/#{follower.raw_hash["subject"]["id"]}"}
           = follower.raw_hash["subject"]["name"]
+
+  - unless @user.id == session[:client].user_id
+    - subscription = @user.followers.detect {|f| f.raw_hash["subscriber"]["id"] == session[:client].user_id}
+    - if subscription
+      %form{:action => "/subscriptions/#{subscription.id}?return_to=/users/#{@user.id}", :method => "post"}
+        %input{:type => "hidden", :name => "_method", :value => "DELETE"}
+        %input{:type => "submit", :value => "Unfollow this user"}
+    - else
+      %form{:action => "/users/#{@user.id}/follow?return_to=/users/#{@user.id}", :method => "post"}
+        %input{:type => "submit", :value => "Follow this user"}

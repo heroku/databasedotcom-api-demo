@@ -17,7 +17,8 @@ config = YAML.load_file("config/salesforce.yml") rescue {}
 client_id = ENV['FORCEDOTCOM_API_CLIENT_ID'] || config["client_id"]
 client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
 debugging = ENV['FORCEDOTCOM_API_DEBUGGING'] || config["debugging"]
-use OmniAuth::Strategies::Salesforce, client_id, client_secret
+host = ENV['FORCEDOTCOM_API_HOST'] || config["host"]
+use OmniAuth::Strategies::Salesforce, client_id, client_secret, :host => host
 
 module MySobjects; end;
 
@@ -137,6 +138,12 @@ post "/chatter/users/:id/post_status" do
   redirect to("/users/#{params[:id]}")
 end
 
+post "/users/:id/follow" do
+  me = Forcedotcom::Api::Chatter::User.find(session[:client], session[:client].user_id)
+  me.follow(params[:id])
+  redirect to(params[:return_to])
+end
+
 get "/users/:id" do
   @user = Forcedotcom::Api::Chatter::User.find(session[:client], params[:id])
   haml :user_page
@@ -145,6 +152,21 @@ end
 get "/groups/:id" do
   @group = Forcedotcom::Api::Chatter::Group.find(session[:client], params[:id])
   haml :group_page
+end
+
+post "/groups/:id/join" do
+  Forcedotcom::Api::Chatter::Group.find(session[:client], params[:id]).join
+  redirect to(params[:return_to])
+end
+
+delete "/group-memberships/:id" do
+  Forcedotcom::Api::Chatter::GroupMembership.delete(session[:client], params[:id])
+  redirect to(params[:return_to])
+end
+
+delete "/subscriptions/:id" do
+  Forcedotcom::Api::Chatter::Subscription.delete(session[:client], params[:id])
+  redirect to(params[:return_to])
 end
 
 post "/feed-item/:id/comment" do

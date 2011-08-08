@@ -5,7 +5,7 @@ module OmniAuth
     class Salesforce < OmniAuth::Strategies::OAuth2
       def initialize(app, consumer_key = nil, consumer_secret = nil, options = {}, &block)
         client_options = {
-          :site => "https://#{ENV['FORCEDOTCOM_API_HOST'] || 'login.salesforce.com'}",
+          :site => "https://#{options[:host] || 'login.salesforce.com'}",
           :authorize_path => '/services/oauth2/authorize',
           :access_token_path => '/services/oauth2/token'
         }

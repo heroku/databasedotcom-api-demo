@@ -7,7 +7,7 @@
       - @feed_items.each do |item|
         %li
           .feed_item
-            %a{:href => "/users/#{item.raw_hash["user"]["id"]}"}= item.raw_hash["user"]["name"]
+            %a{:href => "/users/#{item.raw_hash["actor"]["id"]}"}= item.raw_hash["actor"]["name"]
             = item.raw_hash["body"]["text"]
             .likes
               - current_user_likes = item.raw_hash["currentUserLike"]
