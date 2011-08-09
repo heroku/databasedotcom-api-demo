@@ -3,6 +3,15 @@
     %form{:action => "/sobject/#{params[:type]}/#{@record.Id}", :method => "post"}
       %input{:type => "hidden", :name => "_method", :value => "DELETE"}
       %input{:type => "submit", :value => "Delete this record"}
+    - if @record.class.description["feedEnabled"]
+      - subscription = @user.following.detect{|s| s.raw_hash["subject"]["id"] == @record.Id}
+      - unless subscription
+        %form{:action => "/sobject/#{params[:type]}/#{@record.Id}/follow?return_to=/sobject/#{params[:type]}/#{@record.Id}", :method => "post"}
+          %input{:type => "submit", :value => "Follow this record"}
+      - else
+        %form{:action => "/subscriptions/#{subscription.id}?return_to=/sobject/#{params[:type]}/#{@record.Id}", :method => "post"}
+          %input{:type => "hidden", :name => "_method", :value => "DELETE"}
+          %input{:type => "submit", :value => "Unfollow this record"}
     %a{:href => "/sobject/#{params[:type]}/#{@record.Id}/edit"} Edit this record
   %p
 

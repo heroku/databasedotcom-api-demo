@@ -68,10 +68,17 @@ post "/sobject/:type/create" do
 end
 
 get "/sobject/:type/:record_id" do
+  @user = Forcedotcom::Api::Chatter::User.find(session[:client], "me")
   sobject = params[:type]
   record_id = params[:record_id]
   @record = session[:client].materialize(sobject).find(record_id)
   haml :record
+end
+
+post "/sobject/:type/:record_id/follow" do
+  me = Forcedotcom::Api::Chatter::User.find(session[:client], session[:client].user_id)
+  me.follow(params[:record_id])
+  redirect to(params[:return_to])
 end
 
 get "/sobject/:type/:record_id/edit" do
