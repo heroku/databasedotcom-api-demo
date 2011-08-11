@@ -14,10 +14,10 @@ use Rack::Flash
 set :method_override, true
 
 config = YAML.load_file("config/salesforce.yml") rescue {}
-client_id = ENV['FORCEDOTCOM_API_CLIENT_ID'] || config["client_id"]
-client_secret = ENV['FORCEDOTCOM_API_CLIENT_SECRET'] || config["client_secret"]
-debugging = ENV['FORCEDOTCOM_API_DEBUGGING'] || config["debugging"]
-host = ENV['FORCEDOTCOM_API_HOST'] || config["host"]
+client_id = ENV['DATABASEDOTCOM_CLIENT_ID'] || config["client_id"]
+client_secret = ENV['DATABASEDOTCOM_CLIENT_SECRET'] || config["client_secret"]
+debugging = ENV['DATABASEDOTCOM_DEBUGGING'] || config["debugging"]
+host = ENV['DATABASEDOTCOM_HOST'] || config["host"]
 use OmniAuth::Strategies::Salesforce, client_id, client_secret, :host => host
 
 module MySobjects; end;
