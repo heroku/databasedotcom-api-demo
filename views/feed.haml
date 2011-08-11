@@ -16,10 +16,10 @@
               - if current_user_likes
                 %form{:action => "/feed-item/#{item.id}/like?return_to=#{@return_to}", :method => "post"}
                   %input{:type => "hidden", :name => "_method", :value => "DELETE"}
-                  %input{:type => "submit", :value => "Unlike this"}
+                  %input{:type => "submit", :value => "Unlike"}
               - else
                 %form{:action => "/feed-item/#{item.id}/like?return_to=#{@return_to}", :method => "post"}
-                  %input{:type => "submit", :value => "Like this"}
+                  %input{:type => "submit", :value => "Like"}
             - if item.raw_hash["comments"]["total"] > 0
               .comments
                 %b Comments
@@ -30,7 +30,7 @@
                     = comment.raw_hash["body"]["text"]
                     %form{:action => "/comment/#{comment.id}?return_to=#{@return_to}", :method => "post"}
                       %input{:type => "hidden", :name => "_method", :value => "DELETE"}
-                      %input{:type => "submit", :value => "Delete this comment"}
+                      %input{:type => "submit", :value => "Delete"}
             .comment_form
               %form{:action => "/feed-item/#{item.id}/comment?return_to=#{@return_to}", :method => "post"}
                 %input{:type => "text", :name => "comment"}

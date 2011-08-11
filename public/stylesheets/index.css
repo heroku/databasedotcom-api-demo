@@ -124,3 +124,11 @@ h2 {
   width: 80%;
   margin-top: 20px;
 }
+
+.feed .likes input[type=submit], .feed .comments input[type=submit] {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  font-size: 13px;
+}
