@@ -8,12 +8,13 @@
   .status
     %b Status: 
     = @user.raw_hash["currentStatus"]["body"]["text"]
-    .update_status
-      %form{:action => "/chatter/users/#{@user.id}/post_status", :method => "post"}
-        .status_box
-          %input{:type => "text", :name => "status"}
-        .status_submit
-          %input{:type => "submit", :value => "Share"}
+    - if session[:client].user_id == @user.id
+      .update_status
+        %form{:action => "/chatter/users/#{@user.id}/post_status", :method => "post"}
+          .status_box
+            %input{:type => "text", :name => "status"}
+          .status_submit
+            %input{:type => "submit", :value => "Share"}
 
   .info
     .address
