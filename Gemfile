@@ -12,7 +12,7 @@ gem 'rack-flash'
 #  gem 'forcedotcom-api', :git => "https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git"
 #end
 
-gem 'forcedotcom-api', :git => "https://forcedotcom-api:test1234@github.com/heroku/forcedotcom-api.git"
+gem 'databasedotcom', :git => "git://github.com/heroku/databasedotcom.git"
 gem 'thin'
 
 group :development do

@@ -4,7 +4,7 @@ require 'sinatra'
 require "sinatra/reloader"
 require 'oa-oauth'
 require 'yaml'
-require 'forcedotcom/api'
+require 'databasedotcom'
 require 'haml'
 require 'rack-flash'
 require './vmforce_strategy'
@@ -22,7 +22,7 @@ use OmniAuth::Strategies::Salesforce, client_id, client_secret, :host => host
 
 module MySobjects; end;
 
-error Forcedotcom::Api::SalesForceError do
+error Databasedotcom::SalesForceError do
   exception = env['sinatra.error']
   if exception.error_code == "INVALID_SESSION_ID"
     session[:client] = nil
@@ -42,7 +42,7 @@ get "/" do
 end
 
 get "/auth/salesforce/callback" do
-  session[:client] = Forcedotcom::Api::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging, :sobject_module => MySobjects)
+  session[:client] = Databasedotcom::Client.new(:client_id => client_id, :client_secret => client_secret, :debugging => debugging, :sobject_module => MySobjects)
   session[:client].authenticate(request.env['omniauth.auth'])
   redirect to("/")
 end
@@ -68,7 +68,7 @@ post "/sobject/:type/create" do
 end
 
 get "/sobject/:type/:record_id" do
-  @user = Forcedotcom::Api::Chatter::User.find(session[:client], "me")
+  @user = Databasedotcom::Chatter::User.find(session[:client], "me")
   sobject = params[:type]
   record_id = params[:record_id]
   @record = session[:client].materialize(sobject).find(record_id)
@@ -76,7 +76,7 @@ get "/sobject/:type/:record_id" do
 end
 
 post "/sobject/:type/:record_id/follow" do
-  me = Forcedotcom::Api::Chatter::User.find(session[:client], session[:client].user_id)
+  me = Databasedotcom::Chatter::User.find(session[:client], session[:client].user_id)
   me.follow(params[:record_id])
   redirect to(params[:return_to])
 end
@@ -113,7 +113,7 @@ end
 get "/chatter_search" do
   @client = session[:client]
   @feed_type = "Trending Topic"
-  @feed_items = Forcedotcom::Api::Chatter::FeedItem.search(session[:client], params[:q])
+  @feed_items = Databasedotcom::Chatter::FeedItem.search(session[:client], params[:q])
   @return_to = "/chatter_search?q=#{params[:q]}"
   haml :feed
 end
@@ -121,7 +121,7 @@ end
 get "/feeds/:feed_type" do
   @client = session[:client]
   @feed_type = params[:feed_type]
-  @feed_items = Forcedotcom::Api::Chatter.const_get("#{@feed_type.camelize}Feed").find(@client, "me")
+  @feed_items = Databasedotcom::Chatter.const_get("#{@feed_type.camelize}Feed").find(@client, "me")
   @return_to = "/feeds/#{params[:feed_type]}"
   haml :feed
 end
@@ -129,93 +129,93 @@ end
 get "/filter_feeds/:label/:prefix" do
   @client = session[:client]
   @feed_type = params[:label]
-  @feed_items = Forcedotcom::Api::Chatter::FilterFeed.find(@client, "me", params[:prefix])
+  @feed_items = Databasedotcom::Chatter::FilterFeed.find(@client, "me", params[:prefix])
   @return_to = "/filter_feeds/#{params[:label]}/#{params[:prefix]}"
   haml :feed
 end
 
 get "/chatter/:type" do
-  @entities = Forcedotcom::Api::Chatter.const_get(params[:type][0..-2].capitalize).all(session[:client])
+  @entities = Databasedotcom::Chatter.const_get(params[:type][0..-2].capitalize).all(session[:client])
   @type = params[:type].capitalize
   haml :people
 end
 
 post "/chatter/users/:id/post_status" do
-  Forcedotcom::Api::Chatter::User.post_status(session[:client], params[:id], params[:status])
+  Databasedotcom::Chatter::User.post_status(session[:client], params[:id], params[:status])
   redirect to("/users/#{params[:id]}")
 end
 
 post "/users/:id/follow" do
-  me = Forcedotcom::Api::Chatter::User.find(session[:client], session[:client].user_id)
+  me = Databasedotcom::Chatter::User.find(session[:client], session[:client].user_id)
   me.follow(params[:id])
   redirect to(params[:return_to])
 end
 
 get "/users/:id" do
-  @user = Forcedotcom::Api::Chatter::User.find(session[:client], params[:id])
+  @user = Databasedotcom::Chatter::User.find(session[:client], params[:id])
   haml :user_page
 end
 
 get "/groups/:id" do
-  @group = Forcedotcom::Api::Chatter::Group.find(session[:client], params[:id])
+  @group = Databasedotcom::Chatter::Group.find(session[:client], params[:id])
   haml :group_page
 end
 
 post "/groups/:id/join" do
-  Forcedotcom::Api::Chatter::Group.find(session[:client], params[:id]).join
+  Databasedotcom::Chatter::Group.find(session[:client], params[:id]).join
   redirect to(params[:return_to])
 end
 
 delete "/group-memberships/:id" do
-  Forcedotcom::Api::Chatter::GroupMembership.delete(session[:client], params[:id])
+  Databasedotcom::Chatter::GroupMembership.delete(session[:client], params[:id])
   redirect to(params[:return_to])
 end
 
 delete "/subscriptions/:id" do
-  Forcedotcom::Api::Chatter::Subscription.delete(session[:client], params[:id])
+  Databasedotcom::Chatter::Subscription.delete(session[:client], params[:id])
   redirect to(params[:return_to])
 end
 
 post "/feed-item/:id/comment" do
-  item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
+  item = Databasedotcom::Chatter::FeedItem.find(session[:client], params[:id])
   item.comment(params[:comment])
   redirect to(params[:return_to])
 end
 
 delete "/comment/:id" do
-  comment = Forcedotcom::Api::Chatter::Comment.find(session[:client], params[:id])
+  comment = Databasedotcom::Chatter::Comment.find(session[:client], params[:id])
   comment.delete
   redirect to(params[:return_to])
 end
 
 post "/feed-item/:id/like" do
-  item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
+  item = Databasedotcom::Chatter::FeedItem.find(session[:client], params[:id])
   item.like
   redirect to(params[:return_to])
 end
 
 delete "/feed-item/:id/like" do
-  item = Forcedotcom::Api::Chatter::FeedItem.find(session[:client], params[:id])
-  like = Forcedotcom::Api::Chatter::Like.find(session[:client], item.raw_hash["currentUserLike"]["id"])
+  item = Databasedotcom::Chatter::FeedItem.find(session[:client], params[:id])
+  like = Databasedotcom::Chatter::Like.find(session[:client], item.raw_hash["currentUserLike"]["id"])
   like.delete
   redirect to(params[:return_to])
 end
 
 get "/conversations/:id" do
-  @conversation = Forcedotcom::Api::Chatter::Conversation.find(session[:client], params[:id], :user_id => "me")
+  @conversation = Databasedotcom::Chatter::Conversation.find(session[:client], params[:id], :user_id => "me")
   haml :conversation
 end
 
 post "/messages/:id/reply" do
-  Forcedotcom::Api::Chatter::Message.reply(session[:client], params[:id], params[:text])
+  Databasedotcom::Chatter::Message.reply(session[:client], params[:id], params[:text])
   redirect to(params[:return_to])
 end
 
 post "/login" do
-  session[:client] = Forcedotcom::Api::Client.new("config/salesforce.yml")
+  session[:client] = Databasedotcom::Client.new("config/salesforce.yml")
   begin
     session[:client].authenticate(:username => params[:username], :password => params[:password] + params[:security_token])
-  rescue Forcedotcom::Api::SalesForceError => err
+  rescue Databasedotcom::SalesForceError => err
     session[:client] = nil
     flash[:notice] = err.message
   end
