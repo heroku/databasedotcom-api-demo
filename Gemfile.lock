@@ -1,16 +1,11 @@
-GIT
-  remote: git://github.com/heroku/databasedotcom.git
-  revision: d45514dd35a50ae07c0737b55fcdcbb5036be501
-  specs:
-    databasedotcom (1.0.0)
-      multipart-post (>= 1.1.3)
-
 GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.2.4)
     backports (2.3.0)
     daemons (1.1.4)
+    databasedotcom (1.0.5)
+      multipart-post (>= 1.1.3)
     eventmachine (0.12.10)
     faraday (0.6.1)
       addressable (~> 2.2.4)
@@ -104,7 +99,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  databasedotcom!
+  databasedotcom
   haml
   heroku
   omniauth
