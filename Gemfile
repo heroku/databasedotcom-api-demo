@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gem 'sinatra'
 gem 'sinatra-reloader'
-gem 'omniauth'
+gem 'omniauth', :git => 'git://github.com/intridea/omniauth.git', :branch => '0-3-stable'
 gem 'haml'
 gem 'rack-flash'
 
