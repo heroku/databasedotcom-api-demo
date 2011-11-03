@@ -8,6 +8,7 @@ require 'databasedotcom'
 require 'haml'
 require 'rack-flash'
 require './vmforce_strategy'
+require './string_extensions'
 
 use Rack::Session::Cookie
 use Rack::Flash
