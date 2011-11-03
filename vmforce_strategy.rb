@@ -1,5 +1,3 @@
-require 'omniauth/strategies/salesforce'
-
 module OmniAuth
   module Strategies
     class Salesforce < OmniAuth::Strategies::OAuth2
