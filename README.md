@@ -1,7 +1,7 @@
 # Installation and Setup
 
 1. Clone the repository
-2. Rename the ```config/salesforce.yml.sample``` to ```config/salesforce.yml```
+2. Rename (or copy and paste) the ```config/salesforce.yml.sample``` to ```config/salesforce.yml```
 3. You can specify an optional ```version``` YAML key if Salesforce removes support for an older API as the databasedotcom gem might not have the most up to date default version. For other YAML keys: http://rubydoc.info/github/heroku/databasedotcom/master/Databasedotcom/Client:initialize
 
         ---
