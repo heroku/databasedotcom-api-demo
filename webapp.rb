@@ -62,7 +62,7 @@ end
 post "/sobject/:type/create" do
   object_type = params.delete("type")
   @sobject = session[:client].materialize(object_type)
-  new_object = session[:client].create(object_type, coerce_params(params))
+  new_object = session[:client].create(object_type, @sobject.coerce_params(params))
   flash[:notice] = "A new #{object_type} was created!"
   redirect to("/sobject/#{object_type}/#{new_object.Id}")
 end
@@ -94,7 +94,7 @@ put "/sobject/:type/:record_id/update" do
   record_id = params.delete("record_id")
   params.delete("_method")
   @sobject = session[:client].materialize(object_type)
-  session[:client].update(object_type, record_id, coerce_params(params))
+  session[:client].update(object_type, record_id, @sobject.coerce_params(params))
   flash[:notice] = "The record was updated!"
   redirect to("/sobject/#{object_type}/#{record_id}")
 end
@@ -227,20 +227,3 @@ get "/logout" do
   redirect to("/")
 end
 
-def coerce_params(params)
-  params.each do |attr, value|
-    case @sobject.field_type(attr)
-      when "boolean"
-        params[attr] = value.to_i != 0
-      when "multipicklist"
-        params[attr] = [value]
-      when "currency", "percent", "double"
-        params[attr] = value.to_f
-      when "date"
-        params[attr] = Date.parse(value) rescue Date.today
-      when "datetime"
-        params[attr] = DateTime.parse(value) rescue DateTime.now
-    end
-  end
-  params
-end
