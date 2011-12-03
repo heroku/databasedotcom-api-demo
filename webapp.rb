@@ -100,7 +100,7 @@ put "/sobject/:type/:record_id/update" do
 end
 
 delete "/sobject/:type/:record_id" do
-  session[:client].destroy(params[:type], params[:record_id])
+  session[:client].delete(params[:type], params[:record_id])
   flash[:notice] = "The record was deleted!"
   redirect to("/sobject/#{params[:type]}")
 end
